@@ -32,6 +32,7 @@ namespace MySmartRefrigerator
             {
                 endpoints.MapGet("/", async context =>
                 {
+                    // Return 'Hello World' string to client
                     await context.Response.WriteAsync("Hello World!");
                 });
             });
