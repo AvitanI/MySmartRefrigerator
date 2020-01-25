@@ -1,5 +1,8 @@
 ﻿namespace Common.Logs
 {
+    /// <summary>
+    /// Represent event id for <see cref="Microsoft.Extensions.Logging.EventId"/>
+    /// </summary>
     public enum ELogEvents
     {
         None = 0,
