@@ -1,21 +1,23 @@
 ﻿using MySmartRefrigerator.Models;
+using MySmartRefrigerator.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace MySmartRefrigerator.Services
+namespace MySmartRefrigerator.Repositories
 {
     /// <summary>
     /// Represent services for product
     /// </summary>
-    public class ProductService
+    public class ProductService : IProductService
     {
         #region Instance Variables
 
         /// <summary>
         /// Product repository for CRUD
         /// </summary>
-        private readonly ProductRepository _productRepository;
+        private readonly IProductRepository _productRepository;
 
         #endregion
 
@@ -25,7 +27,7 @@ namespace MySmartRefrigerator.Services
         /// Init product service
         /// </summary>
         /// <param name="productRepository">Product repository instance</param>
-        public ProductService(ProductRepository productRepository)
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
@@ -57,10 +59,10 @@ namespace MySmartRefrigerator.Services
         /// <summary>
         /// Update/Insert product
         /// </summary>
-        /// <param name="product">The product to upsert</param>
+        /// <param name="products">The product to upsert</param>
         /// <returns>Update result of upsert operation</returns>
         /// <exception cref="ArgumentNullException">Throws when product is null</exception>
-        public async Task UpsertProductAsync(IEnumerable<ProductUpdate> products)
+        public async Task UpdateProductsAsync(IEnumerable<ProductUpdate> products)
         {
             #region Validation
 
@@ -71,16 +73,19 @@ namespace MySmartRefrigerator.Services
 
             #endregion
 
+            await UpsertProductsAsync(products.Select(product => new Product 
+            {
+                Code = product.ItemCode,
+                Name = product.ItemName
+            }));
+        }
+
+        private async Task UpsertProductsAsync(IEnumerable<Product> products)
+        {
             #region For Each Product - Insert Or Update
 
-            foreach (ProductUpdate product in products)
+            foreach (Product productToUpdate in products)
             {
-                var productToUpdate = new Product
-                {
-                    Code = product.ItemCode,
-                    Name = product.ItemName
-                };
-
                 await _productRepository.UpsertProductAsync(productToUpdate);
             }
 

@@ -1,15 +1,16 @@
 ﻿using MongoDB.Driver;
 using MySmartRefrigerator.Models;
+using MySmartRefrigerator.Repositories;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MySmartRefrigerator.Services
+namespace MySmartRefrigerator.Repositories
 {
     /// <summary>
     /// Represent CRUD operation for Products collection
     /// </summary>
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
         #region Class Variables
 

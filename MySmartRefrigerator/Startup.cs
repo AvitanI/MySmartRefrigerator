@@ -5,7 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MySmartRefrigerator.Models;
-using MySmartRefrigerator.Services;
+using MySmartRefrigerator.Repositories;
+using MySmartRefrigerator.Repositories;
 
 namespace MySmartRefrigerator
 {
@@ -27,7 +28,9 @@ namespace MySmartRefrigerator
             services.AddSingleton<IProductsDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<ProductsDatabaseSettings>>().Value);
 
-            services.AddSingleton<ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
+
+            services.AddSingleton<IProductRepository, ProductRepository>();
 
             services.AddControllers();
         }

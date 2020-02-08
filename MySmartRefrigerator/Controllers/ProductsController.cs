@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using MySmartRefrigerator.Services;
+using MySmartRefrigerator.Repositories;
 using MySmartRefrigerator.Models;
 using Common.Logs;
 
@@ -18,16 +18,16 @@ namespace MySmartRefrigerator.Controllers
         #region Instance Variables
 
         private readonly ILogger<dynamic> _logger;
-        private readonly ProductRepository _productRepository;
+        private readonly IProductService _productService;
 
         #endregion
 
         #region Constructor
 
-        public ProductsController(ILogger<dynamic> logger, ProductRepository productRepository)
+        public ProductsController(ILogger<ProductsController> logger, IProductService productService)
         {
             _logger = logger;
-            _productRepository = productRepository;
+            _productService = productService;
         }
 
         #endregion
@@ -47,7 +47,7 @@ namespace MySmartRefrigerator.Controllers
 
             try
             {
-                product = await new ProductService(_productRepository).GetProductByCodeAsync(code);
+                product = await _productService.GetProductByCodeAsync(code);
             }
             catch (Exception exception)
             {
@@ -73,7 +73,7 @@ namespace MySmartRefrigerator.Controllers
         {
             try
             {
-                await new ProductService(_productRepository).UpsertProductAsync(products.Products);
+                await _productService.UpdateProductsAsync(products.Products);
             }
             catch (Exception exception)
             {
