@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace MySmartRefrigerator.Models
+namespace WebAPI.Models
 {
     /// <summary>
     /// Represent model for product price

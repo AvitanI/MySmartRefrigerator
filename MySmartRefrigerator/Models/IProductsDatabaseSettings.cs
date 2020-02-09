@@ -1,4 +1,4 @@
-﻿namespace MySmartRefrigerator.Models
+﻿namespace WebAPI.Models
 {
     public interface IProductsDatabaseSettings
     {

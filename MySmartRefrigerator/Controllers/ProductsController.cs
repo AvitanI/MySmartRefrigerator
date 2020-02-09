@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using MySmartRefrigerator.Repositories;
-using MySmartRefrigerator.Models;
+using WebAPI.Repositories;
+using WebAPI.Models;
 using Common.Logs;
 using Common.DTO;
 
-namespace MySmartRefrigerator.Controllers
+namespace WebAPI.Controllers
 {
     /// <summary>
     /// Represent rest for product

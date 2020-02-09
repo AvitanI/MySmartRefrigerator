@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MySmartRefrigerator\MySmartRefrigerator.csproj" />
+    <ProjectReference Include="..\MySmartRefrigerator\WebAPI.csproj" />
   </ItemGroup>
 
 </Project>

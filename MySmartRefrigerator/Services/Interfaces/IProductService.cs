@@ -1,9 +1,9 @@
 ﻿using Common.DTO;
-using MySmartRefrigerator.Models;
+using WebAPI.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MySmartRefrigerator.Repositories
+namespace WebAPI.Repositories
 {
     /// <summary>
     /// Represent services for product

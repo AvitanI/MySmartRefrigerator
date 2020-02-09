@@ -1,8 +1,8 @@
 ﻿using MongoDB.Driver;
-using MySmartRefrigerator.Models;
+using WebAPI.Models;
 using System.Threading.Tasks;
 
-namespace MySmartRefrigerator.Repositories.Interfaces
+namespace WebAPI.Repositories.Interfaces
 {
     /// <summary>
     /// Represent CRUD operation for Products collection

@@ -4,11 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using MySmartRefrigerator.Models;
-using MySmartRefrigerator.Repositories;
-using MySmartRefrigerator.Repositories.Interfaces;
+using WebAPI.Models;
+using WebAPI.Repositories;
+using WebAPI.Repositories.Interfaces;
 
-namespace MySmartRefrigerator
+namespace WebAPI
 {
     public class Startup
     {

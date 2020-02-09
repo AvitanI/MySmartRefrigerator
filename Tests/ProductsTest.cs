@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MySmartRefrigerator.Models;
-using MySmartRefrigerator.Repositories;
-using MySmartRefrigerator.Repositories.Interfaces;
+using WebAPI.Models;
+using WebAPI.Repositories;
+using WebAPI.Repositories.Interfaces;
 using System;
 using System.Threading.Tasks;
 

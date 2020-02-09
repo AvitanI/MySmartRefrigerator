@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace MySmartRefrigerator.Models
+namespace WebAPI.Models
 {
     public class Product
     {

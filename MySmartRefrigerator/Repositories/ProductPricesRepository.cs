@@ -1,12 +1,12 @@
 ﻿using MongoDB.Driver;
-using MySmartRefrigerator.Models;
-using MySmartRefrigerator.Repositories.Interfaces;
+using WebAPI.Models;
+using WebAPI.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MySmartRefrigerator.Repositories
+namespace WebAPI.Repositories
 {
     /// <summary>
     /// Represent CRUD operation for ProductsPrices collection
