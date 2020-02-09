@@ -12,6 +12,8 @@ namespace WebAPI
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -43,6 +45,16 @@ namespace WebAPI
             #endregion
 
             services.AddControllers();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:62934", "https://localhost:44376").AllowAnyHeader()
+                                .AllowAnyMethod(); ;
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +65,9 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors(MyAllowSpecificOrigins);
+
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
     {
         #region Instance Variables
 
-        private readonly ILogger<dynamic> _logger;
+        private readonly ILogger<ProductsController> _logger;
         private readonly IProductService _productService;
 
         #endregion
