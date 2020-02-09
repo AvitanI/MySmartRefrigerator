@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySmartRefrigerator", "MySm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{D6B5D9A8-2F9D-4839-8A86-8B5FF53E6C98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{9892120C-F941-4D3B-9609-681D5A9AEB43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D6B5D9A8-2F9D-4839-8A86-8B5FF53E6C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6B5D9A8-2F9D-4839-8A86-8B5FF53E6C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6B5D9A8-2F9D-4839-8A86-8B5FF53E6C98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9892120C-F941-4D3B-9609-681D5A9AEB43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9892120C-F941-4D3B-9609-681D5A9AEB43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9892120C-F941-4D3B-9609-681D5A9AEB43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9892120C-F941-4D3B-9609-681D5A9AEB43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
