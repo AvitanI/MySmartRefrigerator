@@ -48,7 +48,7 @@ namespace Tests
         [TestMethod]
         [ExpectedException(typeof(ArgumentException),
             "An empty product code inappropriately allowed.")]
-        public async Task MySmartRefrigerator_ProductService_GetProductByCodeAsync_Should_Throw_Argument_Exception()
+        public async Task WebAPI_ProductService_GetProductByCodeAsync_Should_Throw_Argument_Exception()
         {
             #region Arrange
 

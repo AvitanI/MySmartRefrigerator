@@ -14,7 +14,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "MySmartRefrigerator": {
+    "WebAPI": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
