@@ -2,7 +2,7 @@
 using MySmartRefrigerator.Models;
 using System.Threading.Tasks;
 
-namespace MySmartRefrigerator.Repositories
+namespace MySmartRefrigerator.Repositories.Interfaces
 {
     /// <summary>
     /// Represent CRUD operation for Products collection
