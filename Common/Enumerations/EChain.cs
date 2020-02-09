@@ -1,4 +1,4 @@
-﻿namespace MySmartRefrigerator.Models
+﻿namespace Common.Enumerations
 {
     public enum EChain
     {

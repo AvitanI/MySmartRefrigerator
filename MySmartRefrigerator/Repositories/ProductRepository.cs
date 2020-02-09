@@ -1,6 +1,5 @@
 ﻿using MongoDB.Driver;
 using MySmartRefrigerator.Models;
-using MySmartRefrigerator.Repositories;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

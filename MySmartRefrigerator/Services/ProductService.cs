@@ -1,5 +1,7 @@
-﻿using MySmartRefrigerator.Models;
-using MySmartRefrigerator.Repositories;
+﻿using Common.DTO;
+using MySmartRefrigerator.Models;
+//using MySmartRefrigerator.DTO;
+using MySmartRefrigerator.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,11 @@ namespace MySmartRefrigerator.Repositories
         /// </summary>
         private readonly IProductRepository _productRepository;
 
+        /// <summary>
+        /// Product prices repository for CRUD
+        /// </summary>
+        private readonly IProductPricesRepository _productPricesRepository;
+
         #endregion
 
         #region Constructor
@@ -27,9 +34,11 @@ namespace MySmartRefrigerator.Repositories
         /// Init product service
         /// </summary>
         /// <param name="productRepository">Product repository instance</param>
-        public ProductService(IProductRepository productRepository)
+        /// <param name="productPricesRepository">Product prices repository instance</param>
+        public ProductService(IProductRepository productRepository, IProductPricesRepository productPricesRepository)
         {
             _productRepository = productRepository;
+            _productPricesRepository = productPricesRepository;
         }
 
         #endregion
@@ -62,7 +71,7 @@ namespace MySmartRefrigerator.Repositories
         /// <param name="products">The product to upsert</param>
         /// <returns>Update result of upsert operation</returns>
         /// <exception cref="ArgumentNullException">Throws when product is null</exception>
-        public async Task UpdateProductsAsync(IEnumerable<ProductUpdate> products)
+        public async Task UpdateProductsAsync(IEnumerable<ProductUpdateDTO> products)
         {
             #region Validation
 
@@ -78,6 +87,19 @@ namespace MySmartRefrigerator.Repositories
                 Code = product.ItemCode,
                 Name = product.ItemName
             }));
+
+            await InsertProductsPricesAsync(products.Select(product => new ProductPrice 
+            { 
+                Code = product.ItemCode,
+                ChainID = product.ChainID,
+                Price = Convert.ToDecimal(product.ItemPrice),
+                PriceUpdateDate = product.PriceUpdateDate
+            }));
+        }
+
+        private async Task InsertProductsPricesAsync(IEnumerable<ProductPrice> productsPrices)
+        {
+            await _productPricesRepository.InsertProductsPricesProductAsync(productsPrices);
         }
 
         private async Task UpsertProductsAsync(IEnumerable<Product> products)

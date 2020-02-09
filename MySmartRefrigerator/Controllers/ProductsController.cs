@@ -5,6 +5,7 @@ using System;
 using MySmartRefrigerator.Repositories;
 using MySmartRefrigerator.Models;
 using Common.Logs;
+using Common.DTO;
 
 namespace MySmartRefrigerator.Controllers
 {
@@ -69,7 +70,7 @@ namespace MySmartRefrigerator.Controllers
         /// <param name="products">The product to update</param>
         [HttpPost]
         [Route("updateProducts")]
-        public async Task UpdateProductsAsync([FromBody] ProductsList products)
+        public async Task UpdateProductsAsync([FromBody] ProductsListDTO products)
         {
             try
             {

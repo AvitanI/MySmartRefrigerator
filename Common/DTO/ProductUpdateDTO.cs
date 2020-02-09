@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Common.Enumerations;
+using System;
 
-namespace MySmartRefrigerator.Models
+namespace Common.DTO
 {
     /*
      * <PriceUpdateDate>2017-02-07 08:54</PriceUpdateDate>
@@ -21,7 +22,7 @@ namespace MySmartRefrigerator.Models
       <ItemStatus>1</ItemStatus>
      */
 
-    public class ProductUpdate
+    public class ProductUpdateDTO
     {
         public EChain ChainID { get; set; }
 

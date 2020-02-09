@@ -14,7 +14,6 @@ namespace MySmartRefrigerator.Models
 
         public string Name { get; set; }
 
-
         public DateTime LastUpdate { get; set; }
     }
 }

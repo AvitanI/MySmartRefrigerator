@@ -1,4 +1,5 @@
-﻿using MySmartRefrigerator.Models;
+﻿using Common.DTO;
+using MySmartRefrigerator.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,6 +22,6 @@ namespace MySmartRefrigerator.Repositories
         /// </summary>
         /// <param name="products">The product to upsert</param>
         /// <returns>Task</returns>
-        Task UpdateProductsAsync(IEnumerable<ProductUpdate> products);
+        Task UpdateProductsAsync(IEnumerable<ProductUpdateDTO> products);
     }
 }
