@@ -6,6 +6,7 @@ using WebAPI.Repositories;
 using WebAPI.Models;
 using Common.Logs;
 using Common.DTO;
+using Common.API;
 
 namespace WebAPI.Controllers
 {
@@ -42,13 +43,15 @@ namespace WebAPI.Controllers
         /// <returns>Product</returns>
         [HttpGet]
         [Route("getProductByCode/{code}")]
-        public async Task<Product> GetProductByCodeAsync(string code)
+        public async Task<ApiResult<Product>> GetProductByCodeAsync(string code)
         {
-            Product product = null;
-
+            // Init result
+            var apiResult = new ApiResult<Product>();
+            
             try
             {
-                product = await _productService.GetProductByCodeAsync(code);
+                // Get product from service
+                apiResult.Data = await _productService.GetProductByCodeAsync(code);
             }
             catch (Exception exception)
             {
@@ -59,9 +62,11 @@ namespace WebAPI.Controllers
                                 "Failed to get product by code");
 
                 #endregion
+
+                apiResult.SetError();
             }
 
-            return product;
+            return apiResult;
         }
 
         /// <summary>
