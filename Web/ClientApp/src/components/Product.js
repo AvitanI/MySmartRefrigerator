@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 export class Product extends Component {
     // Class variables
@@ -93,10 +95,8 @@ export class Product extends Component {
         <div>
             <h1 id="tabelLabel">Product Info</h1>
             <br />
-            <span>Code</span>
-            <br />
-            <input type="text" value={this.state.code} onChange={this.handleCodeChange} />
-            <input type="button" value="search" onClick={this.handleSearchClick} />
+            <TextField id="standard-basic" label="Code" value={this.state.code} onChange={this.handleCodeChange} />
+            <Button variant="contained" color="primary" onClick={this.handleSearchClick}>search</Button>
             {Product.renderProduct(this.state.product)}
         </div>
     );
