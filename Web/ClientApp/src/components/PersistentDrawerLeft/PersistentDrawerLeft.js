@@ -132,6 +132,7 @@ export default function PersistentDrawerLeft(props) {
                 <List>
                     <ListItem
                         button
+                        disabled={true}
                         component={Link}
                         to="/"
                         key={'Dashboared'}>

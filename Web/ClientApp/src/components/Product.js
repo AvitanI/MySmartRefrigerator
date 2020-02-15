@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { withSnackbar } from 'notistack';
 
 export class Product extends Component {
     // Class variables
@@ -82,6 +83,7 @@ export class Product extends Component {
         if (!responseData         ||
             !responseData.data    ||
             responseData.error) {
+            this.props.enqueueSnackbar('product not found', { variant: 'warning' });
             console.log('response', response);
             return;
         }
@@ -102,3 +104,5 @@ export class Product extends Component {
     );
     }
 }
+
+export default withSnackbar(Product);
