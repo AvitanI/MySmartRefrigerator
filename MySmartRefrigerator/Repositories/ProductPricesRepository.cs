@@ -47,6 +47,32 @@ namespace WebAPI.Repositories
         #region Instance Methods
 
         /// <summary>
+        /// Get product prices by code
+        /// </summary>
+        /// <param name="code">The product code</param>
+        /// <exception cref="ArgumentException">Throws when product code is empty</exception>
+        /// <returns>Product prices</returns>
+        public async Task<IEnumerable<ProductPrice>> GetProductPricesByCodeAsync(string code)
+        {
+            #region Validation
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                throw new ArgumentException("Required product code", nameof(code));
+            }
+
+            #endregion
+
+            // Create filter
+            FilterDefinition<ProductPrice> filter = Builders<ProductPrice>.Filter.Eq(p => p.Code, code);
+
+            // Set cancellation token
+            var cancellationTokenSource = new CancellationTokenSource(CommandTimeoutInMS);
+
+            return await _productsPrices.Find(filter).ToListAsync(cancellationToken: cancellationTokenSource.Token);
+        }
+
+        /// <summary>
         /// Update/Insert product
         /// </summary>
         /// <param name="product">The product to upsert</param>

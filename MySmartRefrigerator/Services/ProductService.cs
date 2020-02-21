@@ -65,6 +65,26 @@ namespace WebAPI.Repositories
         }
 
         /// <summary>
+        /// Get product prices by code (barcode)
+        /// </summary>
+        /// <param name="code">The product code</param>
+        /// <exception cref="ArgumentException">Throws when product code is empty</exception>
+        /// <returns>Product prices</returns>
+        public async Task<IEnumerable<ProductPrice>> GetProductPricesByCodeAsync(string code)
+        {
+            #region Validation
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                throw new ArgumentException("Required product code", nameof(code));
+            }
+
+            #endregion
+
+            return await _productPricesRepository.GetProductPricesByCodeAsync(code);
+        }
+
+        /// <summary>
         /// Update/Insert product
         /// </summary>
         /// <param name="products">The product to upsert</param>

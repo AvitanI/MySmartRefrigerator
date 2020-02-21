@@ -7,6 +7,7 @@
     {
         None = 0,
         FailedToGetProductByCode = 1,
-        FailedToUpdateProducts = 2
+        FailedToUpdateProducts = 2,
+        FailedToGetProductPricesByCode = 3
     }
 }

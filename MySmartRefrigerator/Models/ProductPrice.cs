@@ -33,5 +33,11 @@ namespace WebAPI.Models
         /// The date price updated
         /// </summary>
         public DateTime PriceUpdateDate { get; set; }
+
+        /// <summary>
+        /// Get creation time
+        /// </summary>
+        [BsonIgnore]
+        public DateTime CreationTime => new ObjectId(ID).CreationTime;
     }
 }
