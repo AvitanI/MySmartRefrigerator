@@ -1,32 +1,24 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { withSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-export class Product extends Component {
-    
-    constructor(props) {
-        super(props);
+const Product = () => {
+    // State
+    const [product, setProduct] = useState({});
+    const [loading, setloading] = useState(false);
+    const [code, setCode] = useState('');
+    const [invalidCode, setInvalidCode] = useState(false);
 
-        this.state = {
-            product: {},
-            loading: false,
-            code: '',
-            invalidCode: false
-        };
-
-        this.handleCodeChange = this.handleCodeChange.bind(this);
-        this.handleSearchClick = this.handleSearchClick.bind(this);
-    }
-
-    /* Class Methods */
+    // Libs
+    const { enqueueSnackbar } = useSnackbar();
 
     /**
      * Renderes the product in table
      * @param {any} product
      */
-    static renderProduct(product) {
+    const renderProduct = (product) => {
         return (
         <table className='table table-striped' aria-labelledby="tabelLabel">
             <thead>
@@ -47,36 +39,34 @@ export class Product extends Component {
             </tbody>
         </table>
         );
-  }
-
-    /* Instance Methods */
+    }
 
     /**
      * Called for every change and setting the code
      * @param {any} e
      */
-    handleCodeChange(e) {
+    const handleCodeChange = (e) => {
         let code = e.target.value;
         code = (code && code.trim()) || '';
 
         const invalidCode = !code.length;
 
-        this.setState({ code, invalidCode });
+        setInvalidCode(invalidCode);
+        setCode(code);
     }
 
     /**
      * Called when searching product
      * @param {any} e
      */
-    handleSearchClick(e) {
-        const { code } = this.state;
+    const handleSearchClick = (e) => {
         const invalidCode = !!(!code || !code.length);
 
         if(invalidCode) {
-            this.setState({ invalidCode });
+            setInvalidCode(invalidCode);
         }
         else {
-            this.getProductByID(this.state.code);
+            getProductByID(code);
         }
     }
 
@@ -84,9 +74,10 @@ export class Product extends Component {
      * gets product from api by code
      * @param {any} code
      */
-    async getProductByID(code) {
-        this.setState({ loading: true, product: {} });
-
+    const getProductByID = async (code) => {
+        setloading(true);
+        setProduct({});
+        
         let responseData = null;
 
         try {
@@ -98,40 +89,37 @@ export class Product extends Component {
             console.log('e', e);
         }
 
-        this.setState({ loading: false });
+        setloading(false);
 
         if (!responseData         ||
             !responseData.data    ||
             responseData.error) {
-            this.props.enqueueSnackbar('product not found', { variant: 'warning' });
+            enqueueSnackbar('product not found', { variant: 'warning' });
             return;
         }
  
-        this.setState({ product: responseData.data });
+        setProduct(responseData.data);
     }
 
-    render() {    
-        const { loading, product, code, invalidCode } = this.state;
-        
-        return (
-            <div>
-                <h1 id="tabelLabel">Product Info</h1>
-                <br />
-                <TextField
-                    error={invalidCode}
-                    label={(invalidCode) ? "Invalid code" : "Code" }
-                    value={code} 
-                    onChange={this.handleCodeChange}
-                />
-                
-                <Button variant="contained" color="primary" onClick={this.handleSearchClick}>search</Button>  
+    return (
+        <div>
+            <h1 id="tabelLabel">Product Info</h1>
+            <br />
+            <TextField
+                error={invalidCode}
+                label={(invalidCode) ? "Invalid code" : "Code" }
+                value={code} 
+                onChange={handleCodeChange}
+            />
+            
+            <Button variant="contained" color="primary" onClick={handleSearchClick}>search</Button>  
 
-                <div style={{ margin: '50px 0 0 0' }}>
-                    { (loading) ? <CircularProgress /> : Product.renderProduct(product) }
-                </div>
+            <div style={{ margin: '50px 0 0 0' }}>
+                { (loading) ? <CircularProgress /> : renderProduct(product) }
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
-export default withSnackbar(Product);
+
+export default Product;

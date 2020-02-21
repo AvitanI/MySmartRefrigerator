@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route } from 'react-router';
 //import { Dasboared } from './components/Dasboared';
 import Product from './components/Product';
@@ -7,15 +7,15 @@ import { SnackbarProvider } from 'notistack';
 
 import './custom.css'
 
-export default class App extends Component {
-  render () {
-      return (
-          <SnackbarProvider maxSnack={1} anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}>
-            <PersistentDrawerLeft>
-                <Route exact path='/' component={Product /*Dasboared*/} />
-                <Route path='/findProduct' component={Product} />
-            </PersistentDrawerLeft>
-          </SnackbarProvider>
-    );
-  }
-}
+const App = () => {
+  return (
+      <SnackbarProvider maxSnack={1} anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}>
+        <PersistentDrawerLeft>
+            <Route exact path='/' component={Product /*Dasboared*/} />
+            <Route path='/findProduct' component={Product} />
+        </PersistentDrawerLeft>
+      </SnackbarProvider>
+  );
+};
+
+export default App;

@@ -1,11 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export class Dasboared extends Component {
-    render() {
-        return (
-            <div>
-                <h1>Empty</h1>
-            </div>
-        );
-    }
+export default function Dasboared() {
+    return (
+        <div>
+            <h1>Empty</h1>
+        </div>
+    );
 }
