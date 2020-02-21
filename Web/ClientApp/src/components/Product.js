@@ -103,8 +103,6 @@ const Product = () => {
 
     return (
         <div>
-            <h1 id="tabelLabel">Product Info</h1>
-            <br />
             <TextField
                 error={invalidCode}
                 label={(invalidCode) ? "Invalid code" : "Code" }
@@ -113,6 +111,8 @@ const Product = () => {
             />
             
             <Button variant="contained" color="primary" onClick={handleSearchClick}>search</Button>  
+
+            <h1 style={{ margin: '50px 0 0 0' }}>Product Info</h1>
 
             <div style={{ margin: '50px 0 0 0' }}>
                 { (loading) ? <CircularProgress /> : renderProduct(product) }
