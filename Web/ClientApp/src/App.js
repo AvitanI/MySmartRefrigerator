@@ -8,8 +8,6 @@ import { SnackbarProvider } from 'notistack';
 import './custom.css'
 
 export default class App extends Component {
-  static displayName = App.name;
-
   render () {
       return (
           <SnackbarProvider maxSnack={1} anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}>

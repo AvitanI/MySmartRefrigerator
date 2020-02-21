@@ -2,23 +2,18 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { withSnackbar } from 'notistack';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export class Product extends Component {
-    // Class variables
-    static displayName = Product.name;
-
+    
     constructor(props) {
         super(props);
 
         this.state = {
-            product: {
-                id: '',
-                code: '',
-                name: '',
-                lastUpdate: ''
-            },
-            loading: true,
-            code: ''
+            product: {},
+            loading: false,
+            code: '',
+            invalidCode: false
         };
 
         this.handleCodeChange = this.handleCodeChange.bind(this);
@@ -32,26 +27,26 @@ export class Product extends Component {
      * @param {any} product
      */
     static renderProduct(product) {
-    return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Last Update</th>
-          </tr>
-        </thead>
-        <tbody>
+        return (
+        <table className='table table-striped' aria-labelledby="tabelLabel">
+            <thead>
             <tr>
-                <td>{product.id}</td>
-                <td>{product.code}</td>
-                <td>{product.name}</td>
-                <td>{product.lastUpdate}</td>
+                <th>ID</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Last Update</th>
             </tr>
-        </tbody>
-      </table>
-    );
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{product.id}</td>
+                    <td>{product.code}</td>
+                    <td>{product.name}</td>
+                    <td>{product.lastUpdate}</td>
+                </tr>
+            </tbody>
+        </table>
+        );
   }
 
     /* Instance Methods */
@@ -61,7 +56,12 @@ export class Product extends Component {
      * @param {any} e
      */
     handleCodeChange(e) {
-        this.setState({ code: e.target.value });
+        let code = e.target.value;
+        code = (code && code.trim()) || '';
+
+        const invalidCode = !code.length;
+
+        this.setState({ code, invalidCode });
     }
 
     /**
@@ -69,7 +69,15 @@ export class Product extends Component {
      * @param {any} e
      */
     handleSearchClick(e) {
-        this.getProductByID(this.state.code);
+        const { code } = this.state;
+        const invalidCode = !!(!code || !code.length);
+
+        if(invalidCode) {
+            this.setState({ invalidCode });
+        }
+        else {
+            this.getProductByID(this.state.code);
+        }
     }
 
     /**
@@ -77,31 +85,52 @@ export class Product extends Component {
      * @param {any} code
      */
     async getProductByID(code) {
-        const response = await fetch('http://localhost:49847/api/products/getProductByCode/' + code);
-        const responseData = await response.json();
+        this.setState({ loading: true, product: {} });
+
+        let responseData = null;
+
+        try {
+            const response= await fetch('http://localhost:49847/api/products/getProductByCode/' + code);
+            console.log('response', response);
+            responseData = await response.json();
+        }
+        catch(e) {
+            console.log('e', e);
+        }
+
+        this.setState({ loading: false });
 
         if (!responseData         ||
             !responseData.data    ||
             responseData.error) {
             this.props.enqueueSnackbar('product not found', { variant: 'warning' });
-            console.log('response', response);
             return;
         }
  
-        this.setState({ product: responseData.data, loading: false });
+        this.setState({ product: responseData.data });
     }
 
-    render() {
-    
-    return (
-        <div>
-            <h1 id="tabelLabel">Product Info</h1>
-            <br />
-            <TextField id="standard-basic" label="Code" value={this.state.code} onChange={this.handleCodeChange} />
-            <Button variant="contained" color="primary" onClick={this.handleSearchClick}>search</Button>
-            {Product.renderProduct(this.state.product)}
-        </div>
-    );
+    render() {    
+        const { loading, product, code, invalidCode } = this.state;
+        
+        return (
+            <div>
+                <h1 id="tabelLabel">Product Info</h1>
+                <br />
+                <TextField
+                    error={invalidCode}
+                    label={(invalidCode) ? "Invalid code" : "Code" }
+                    value={code} 
+                    onChange={this.handleCodeChange}
+                />
+                
+                <Button variant="contained" color="primary" onClick={this.handleSearchClick}>search</Button>  
+
+                <div style={{ margin: '50px 0 0 0' }}>
+                    { (loading) ? <CircularProgress /> : Product.renderProduct(product) }
+                </div>
+            </div>
+        );
     }
 }
 
