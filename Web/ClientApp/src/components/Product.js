@@ -13,6 +13,12 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
+/* Internal Components */
+import Image from './Image/Image';
+
+const ramiLeviStaticImages = (code) => `https://static.rami-levy.co.il/storage/images/${code}/medium.jpg`;
 
 const Product = () => {
     // State
@@ -21,7 +27,7 @@ const Product = () => {
     const [loading, setloading] = useState(false);
     const [code, setCode] = useState('');
     const [invalidCode, setInvalidCode] = useState(false);
-
+    
     // Libs
     const { enqueueSnackbar } = useSnackbar();
 
@@ -30,25 +36,44 @@ const Product = () => {
      * @param {any} product
      */
     const renderProduct = (product) => {
+        // When product mot found
+        if(!product) {
+            return (<div>Product not found</div>)
+        }
+
+        // When product is empty (first render)
+        if(!Object.keys(product).length) {
+            return (<div></div>)
+        }
+
+        // Render the product
         return (
-        <table className='table table-striped' aria-labelledby="tabelLabel">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Last Update</th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{product.id}</td>
-                    <td>{product.code}</td>
-                    <td>{product.name}</td>
-                    <td>{product.lastUpdate}</td>
-                </tr>
-            </tbody>
-        </table>
+            <div>
+                <Paper>
+                    <Typography variant="h5" gutterBottom>
+                        {product.name}
+                    </Typography>
+                    <Image src={`http://localhost:49847/api/ImagesProxy/getProductImage?url=${ramiLeviStaticImages(code)}`} />
+                </Paper>
+                {/* <table className='table table-striped' aria-labelledby="tabelLabel">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Last Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{product.id}</td>
+                            <td>{product.code}</td>
+                            <td>{product.name}</td>
+                            <td>{product.lastUpdate}</td>
+                        </tr>
+                    </tbody>
+                </table> */}
+            </div>
         );
     };
 
@@ -88,13 +113,12 @@ const Product = () => {
      */
     const getProductByID = async (code) => {
         setloading(true);
-        setProduct({});
         
         let responseData = null;
 
         try {
             const response= await fetch('http://localhost:49847/api/products/getProductByCode/' + code);
-            console.log('response', response);
+            // console.log('response', response);
             responseData = await response.json();
         }
         catch(e) {
@@ -107,6 +131,9 @@ const Product = () => {
             !responseData.data    ||
             responseData.error) {
             enqueueSnackbar('product not found', { variant: 'warning' });
+
+            setProduct(null);
+
             return;
         }
  
@@ -121,7 +148,7 @@ const Product = () => {
 
         try {
             const response= await fetch('http://localhost:49847/api/productPrices/getProductPricesByCode/' + code);
-            console.log('response', response);
+            // console.log('response', response);
             responseData = await response.json();
         }
         catch(e) {
