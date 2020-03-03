@@ -16,7 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 /* Internal Components */
-import Image from './Image/Image';
+import Image from '../Image/Image';
 
 const ramiLeviStaticImages = (code) => `https://static.rami-levy.co.il/storage/images/${code}/medium.jpg`;
 
@@ -47,6 +47,7 @@ const Product = () => {
         }
 
         // Render the product
+        // 16000548909
         return (
             <div>
                 <Paper>

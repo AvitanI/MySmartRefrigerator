@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router';
-//import { Dasboared } from './components/Dasboared';
-import Product from './components/Product';
+//import { Dasboared } from './components/Dasboared/Dasboared';
+import Product from './components/Product/Product';
 import PersistentDrawerLeft from './components/PersistentDrawerLeft/PersistentDrawerLeft';
 import { SnackbarProvider } from 'notistack';
 
