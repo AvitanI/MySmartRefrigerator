@@ -14,9 +14,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
 /* Internal Components */
 import Image from '../Image/Image';
+
+const usePaperStyle = makeStyles({
+    root: {
+      height: '450px'
+    }
+  });
 
 const ramiLeviStaticImages = (code) => `https://static.rami-levy.co.il/storage/images/${code}/medium.jpg`;
 
@@ -31,6 +38,9 @@ const Product = () => {
     // Libs
     const { enqueueSnackbar } = useSnackbar();
 
+    // Style
+    const papersStyle = usePaperStyle();
+
     /**
      * Renderes the product in table
      * @param {any} product
@@ -38,24 +48,24 @@ const Product = () => {
     const renderProduct = (product) => {
         // When product mot found
         if(!product) {
-            return (<div>Product not found</div>)
+            return (<div>Product not found</div>);
         }
 
         // When product is empty (first render)
         if(!Object.keys(product).length) {
-            return (<div></div>)
+            return null;
         }
 
         // Render the product
         // 16000548909
         return (
             <div>
-                <Paper>
-                    <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" align="center" gutterBottom>
                         {product.name}
-                    </Typography>
+                </Typography>
+                <div style={{ width: '50%' }}>
                     <Image src={`http://localhost:49847/api/ImagesProxy/getProductImage?url=${ramiLeviStaticImages(code)}`} />
-                </Paper>
+                </div>
                 {/* <table className='table table-striped' aria-labelledby="tabelLabel">
                     <thead>
                         <tr>
@@ -169,31 +179,33 @@ const Product = () => {
     };
 
     const renderProductPrices = (productPrices) => {
+        if(!productPrices || !productPrices.length) {
+            return null;
+        }
+
         return (
-            <TableContainer component={Paper}>
-                <Table aria-label="simple table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell align="right">Chain ID</TableCell>
-                        <TableCell align="right">Price</TableCell>
-                        <TableCell align="right">Price Update Date</TableCell>
-                        <TableCell align="right">Creation Time</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        { productPrices.map(productPrice => (
-                            <TableRow key={productPrice.id}>
-                                <TableCell component="th" scope="row">{productPrice.id}</TableCell>
-                                <TableCell align="right">{productPrice.chainID}</TableCell>
-                                <TableCell align="right">{productPrice.price}</TableCell>
-                                <TableCell align="right">{productPrice.priceUpdateDate}</TableCell>
-                                <TableCell align="right">{productPrice.creationTime}</TableCell>
-                            </TableRow>
-                        )) }
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Table aria-label="simple table">
+                <TableHead>
+                <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell align="right">Chain ID</TableCell>
+                    <TableCell align="right">Price</TableCell>
+                    <TableCell align="right">Price Update Date</TableCell>
+                    <TableCell align="right">Creation Time</TableCell>
+                </TableRow>
+                </TableHead>
+                <TableBody>
+                    { productPrices.map(productPrice => (
+                        <TableRow key={productPrice.id}>
+                            <TableCell component="th" scope="row">{productPrice.id}</TableCell>
+                            <TableCell align="right">{productPrice.chainID}</TableCell>
+                            <TableCell align="right">{productPrice.price}</TableCell>
+                            <TableCell align="right">{productPrice.priceUpdateDate}</TableCell>
+                            <TableCell align="right">{productPrice.creationTime}</TableCell>
+                        </TableRow>
+                    )) }
+                </TableBody>
+            </Table>
         );
     };
 
@@ -211,11 +223,15 @@ const Product = () => {
             <h1 style={{ margin: '50px 0 0 0' }}>Product Info</h1>
 
             <div style={{ margin: '50px 0 0 0' }}>
-                <div style={{ width: '50%', float: 'left' }}>
-                    { (loading) ? <CircularProgress /> : renderProduct(product) }
+                <div style={{ width: '50%', float: 'left', paddingRight: '30px' }}>
+                    <Paper elevation={3} classes={{ root: papersStyle.root }}>
+                        { renderProductPrices(productPrices) }
+                    </Paper>
                 </div>
                 <div style={{ width: '50%', float: 'left' }}>
-                    { renderProductPrices(productPrices) }
+                    <Paper elevation={3} classes={{ root: papersStyle.root }}>
+                        { (loading) ? <CircularProgress /> : renderProduct(product) }
+                    </Paper>
                 </div>
             </div>
         </div>

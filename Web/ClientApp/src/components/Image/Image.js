@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 /* Material UI */
 import BrokenImageIcon from '@material-ui/icons/BrokenImage';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Image = (props) => {
     // Props
@@ -10,11 +11,14 @@ const Image = (props) => {
 
     // State
     const [readerResult, setReaderResult] = useState('');
+    const [loading, setLoading] = useState(false);
 
     /*
      * Load image from given url
      */
     const tryToloadImage = async () => {
+        setLoading(true);
+
         try {
             const response = await fetch(src);
 
@@ -26,11 +30,16 @@ const Image = (props) => {
 
             var reader = new FileReader();
             // Base64 data URI
-            reader.onload = () => { setReaderResult(reader.result) };
+            reader.onload = () => { 
+                setReaderResult(reader.result);
+                setLoading(false);
+            };
+
             reader.readAsDataURL(blob);
         }
         catch(err) {
             setReaderResult('');
+            setLoading(false);
         }
     };
 
@@ -54,15 +63,25 @@ const Image = (props) => {
         );
     };
 
+    const renderImage = () => {
+        return (
+            <div>
+                {
+                    (!!(readerResult && readerResult.trim())) ? 
+                        <img src={readerResult} 
+                            alt="Image not found"
+                            style={{ width: '100%', height: 'auto' }}></img>
+                        :
+                        renderFallback()
+                }
+            </div>
+        );
+    };
+
     return (
-        <div>
+        <div style={{ textAlign: 'center' }}>
             {
-                (!!(readerResult && readerResult.trim())) ? 
-                    <img src={readerResult} 
-                        alt="Image not found"
-                        style={{ width: '50%' }}></img>
-                    :
-                    renderFallback()
+                (loading) ? <CircularProgress /> : renderImage()
             }
         </div>
     );
