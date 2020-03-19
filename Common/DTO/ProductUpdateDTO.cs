@@ -1,5 +1,4 @@
-﻿using Common.Enumerations;
-using System;
+﻿using System;
 
 namespace Common.DTO
 {
@@ -24,8 +23,6 @@ namespace Common.DTO
 
     public class ProductUpdateDTO
     {
-        public EChain ChainID { get; set; }
-
         public DateTime PriceUpdateDate { get; set; }
 
         public string ItemCode { get; set; }

@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
+using Common.Enumerations;
 
 namespace WebAPI.Repositories
 {
@@ -87,30 +89,49 @@ namespace WebAPI.Repositories
         /// <summary>
         /// Update/Insert product
         /// </summary>
-        /// <param name="products">The product to upsert</param>
+        /// <param name="productsList">The product to upsert</param>
         /// <returns>Update result of upsert operation</returns>
         /// <exception cref="ArgumentNullException">Throws when product is null</exception>
-        public async Task UpdateProductsAsync(IEnumerable<ProductUpdateDTO> products)
+        /// <exception cref="ArgumentException">Throws when invalid chain</exception>
+        /// <exception cref="ArgumentException">Throws when store id is empty</exception>
+        /// <exception cref="ArgumentException">Throws when products are empty</exception>
+        public async Task UpdateProductsAsync(ProductsListDTO productsList)
         {
-            #region Validation
+            #region Validations
 
-            if (products is null)
+            if (productsList is null)
             {
-                throw new ArgumentNullException(nameof(products));
+                throw new ArgumentNullException(nameof(productsList));
+            }
+
+            if (productsList.ChainID == EChain.None)
+            {
+                throw new ArgumentException("Invalid chain", nameof(productsList.ChainID));
+            }
+
+            if (string.IsNullOrWhiteSpace(productsList.StoreID))
+            {
+                throw new ArgumentException("Store id is empty", nameof(productsList.StoreID));
+            }
+
+            if (productsList.Products.IsNullOrEmpty())
+            {
+                throw new ArgumentException("Products are empty", nameof(productsList.Products));
             }
 
             #endregion
 
-            await UpsertProductsAsync(products.Select(product => new Product 
+            await UpsertProductsAsync(productsList.Products.Select(product => new Product 
             {
                 Code = product.ItemCode,
                 Name = product.ItemName
             }));
 
-            await InsertProductsPricesAsync(products.Select(product => new ProductPrice 
+            await InsertProductsPricesAsync(productsList.Products.Select(product => new ProductPrice 
             { 
                 Code = product.ItemCode,
-                ChainID = product.ChainID,
+                ChainID = productsList.ChainID,
+                StoreID = productsList.StoreID,
                 Price = Convert.ToDecimal(product.ItemPrice),
                 PriceUpdateDate = product.PriceUpdateDate
             }));

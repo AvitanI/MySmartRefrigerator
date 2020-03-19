@@ -20,9 +20,9 @@ namespace WebAPI.Repositories
         /// <summary>
         /// Update/Insert product
         /// </summary>
-        /// <param name="products">The product to upsert</param>
+        /// <param name="productsList">The product to upsert</param>
         /// <returns>Task</returns>
-        Task UpdateProductsAsync(IEnumerable<ProductUpdateDTO> products);
+        Task UpdateProductsAsync(ProductsListDTO productsList);
 
         /// <summary>
         /// Get product prices by code (barcode)

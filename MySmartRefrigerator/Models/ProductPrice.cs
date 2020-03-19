@@ -25,6 +25,11 @@ namespace WebAPI.Models
         public EChain ChainID { get; set; }
 
         /// <summary>
+        /// The store id
+        /// </summary>
+        public string StoreID { get; set; }
+
+        /// <summary>
         /// Price
         /// </summary>
         public decimal Price { get; set; }

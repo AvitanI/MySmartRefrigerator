@@ -72,14 +72,14 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Update products
         /// </summary>
-        /// <param name="products">The product to update</param>
+        /// <param name="productsList">The product to update</param>
         [HttpPost]
         [Route("updateProducts")]
-        public async Task UpdateProductsAsync([FromBody] ProductsListDTO products)
+        public async Task UpdateProductsAsync([FromBody] ProductsListDTO productsList)
         {
             try
             {
-                await _productService.UpdateProductsAsync(products.Products);
+                await _productService.UpdateProductsAsync(productsList);
             }
             catch (Exception exception)
             {
