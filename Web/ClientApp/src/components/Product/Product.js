@@ -24,7 +24,7 @@ import StoresContext from '../../contexts/storesContext';
 
 const usePaperStyle = makeStyles({
     root: {
-      height: '450px'
+      height: '550px'
     }
   });
 
@@ -73,24 +73,6 @@ const Product = () => {
                 <div style={{ width: '50%' }}>
                     <Image src={`http://localhost:49847/api/ImagesProxy/getProductImage?url=${ramiLeviStaticImages(code)}`} />
                 </div>
-                {/* <table className='table table-striped' aria-labelledby="tabelLabel">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Code</th>
-                            <th>Name</th>
-                            <th>Last Update</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{product.id}</td>
-                            <td>{product.code}</td>
-                            <td>{product.name}</td>
-                            <td>{product.lastUpdate}</td>
-                        </tr>
-                    </tbody>
-                </table> */}
             </div>
         );
     };
@@ -121,7 +103,7 @@ const Product = () => {
         }
         else {
             getProductByID(code);
-            getProductPricesByID(code);
+            getLastUpdatedProductPricesByID(code);
         }
     };
 
@@ -158,14 +140,14 @@ const Product = () => {
         setProduct(responseData.data);
     };
 
-    const getProductPricesByID = async (code) => {
+    const getLastUpdatedProductPricesByID = async (code) => {
         // setloading(true);
         setProduct([]);
         
         let responseData = null;
 
         try {
-            const response= await fetch('http://localhost:49847/api/productPrices/getProductPricesByCode/' + code);
+            const response= await fetch('http://localhost:49847/api/productPrices/getLastUpdatedProductPricesByCode/' + code);
             // console.log('response', response);
             responseData = await response.json();
         }
@@ -194,12 +176,10 @@ const Product = () => {
             <Table aria-label="simple table">
                 <TableHead>
                 <TableRow>
-                    <TableCell>Chain</TableCell>
-                    <TableCell align="right">Sub Chain</TableCell>
-                    <TableCell align="right">Store</TableCell>
-                    <TableCell align="right">Price</TableCell>
-                    <TableCell align="right">Price Update Date</TableCell>
-                    <TableCell align="right">Creation Time</TableCell>
+                    <TableCell align="center">Chain</TableCell>
+                    <TableCell align="center">Sub Chain</TableCell>
+                    <TableCell align="center">Store</TableCell>
+                    <TableCell align="center">Price</TableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody>
@@ -211,12 +191,10 @@ const Product = () => {
 
                             return (
                                 <TableRow key={productPrice.id}>
-                                    <TableCell align="right">{chainName}</TableCell>
-                                    <TableCell align="right">{subChainName}</TableCell>
-                                    <TableCell align="right">{storeName}</TableCell>
-                                    <TableCell align="right">{productPrice.price}</TableCell>
-                                    <TableCell align="right">{productPrice.priceUpdateDate}</TableCell>
-                                    <TableCell align="right">{productPrice.creationTime}</TableCell>
+                                    <TableCell align="center">{chainName}</TableCell>
+                                    <TableCell align="center">{subChainName}</TableCell>
+                                    <TableCell align="center">{storeName}</TableCell>
+                                    <TableCell align="center">{productPrice.price} &#8362;</TableCell>
                                 </TableRow>
                             );
                         }) 
