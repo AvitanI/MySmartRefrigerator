@@ -1,5 +1,5 @@
 /* React */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 /* Material UI */
 import Button from '@material-ui/core/Button';
@@ -9,7 +9,6 @@ import { useSnackbar } from 'notistack';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
@@ -18,6 +17,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 /* Internal Components */
 import Image from '../Image/Image';
+
+/* Contexts */
+import StoresContext from '../../contexts/storesContext';
+
 
 const usePaperStyle = makeStyles({
     root: {
@@ -35,6 +38,10 @@ const Product = () => {
     const [code, setCode] = useState('');
     const [invalidCode, setInvalidCode] = useState(false);
     
+    // Context
+    const stores = useContext(StoresContext);
+    //console.log('stores', stores);
+
     // Libs
     const { enqueueSnackbar } = useSnackbar();
 
@@ -187,23 +194,33 @@ const Product = () => {
             <Table aria-label="simple table">
                 <TableHead>
                 <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell align="right">Chain ID</TableCell>
+                    <TableCell>Chain</TableCell>
+                    <TableCell align="right">Sub Chain</TableCell>
+                    <TableCell align="right">Store</TableCell>
                     <TableCell align="right">Price</TableCell>
                     <TableCell align="right">Price Update Date</TableCell>
                     <TableCell align="right">Creation Time</TableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                    { productPrices.map(productPrice => (
-                        <TableRow key={productPrice.id}>
-                            <TableCell component="th" scope="row">{productPrice.id}</TableCell>
-                            <TableCell align="right">{productPrice.chainID}</TableCell>
-                            <TableCell align="right">{productPrice.price}</TableCell>
-                            <TableCell align="right">{productPrice.priceUpdateDate}</TableCell>
-                            <TableCell align="right">{productPrice.creationTime}</TableCell>
-                        </TableRow>
-                    )) }
+                    { 
+                        productPrices.map(productPrice => { 
+                            const { chainID = 0, storeID = '' } = productPrice;
+                            const store = stores.find(s => s.internalChainID === chainID && s.storeID === storeID);
+                            const { chainName = 'unknown', subChainName = 'unknown', storeName = 'unknown' } = store || {};
+
+                            return (
+                                <TableRow key={productPrice.id}>
+                                    <TableCell align="right">{chainName}</TableCell>
+                                    <TableCell align="right">{subChainName}</TableCell>
+                                    <TableCell align="right">{storeName}</TableCell>
+                                    <TableCell align="right">{productPrice.price}</TableCell>
+                                    <TableCell align="right">{productPrice.priceUpdateDate}</TableCell>
+                                    <TableCell align="right">{productPrice.creationTime}</TableCell>
+                                </TableRow>
+                            );
+                        }) 
+                    }
                 </TableBody>
             </Table>
         );
