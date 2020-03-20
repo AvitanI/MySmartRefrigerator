@@ -10,11 +10,11 @@ namespace WebAPI.Repositories.Interfaces
     public interface IProductPricesRepository
     {
         /// <summary>
-        /// Get product prices by code
+        /// Get last updated product prices by code
         /// </summary>
         /// <param name="code">The product code</param>
         /// <returns>Product prices</returns>
-        public Task<IEnumerable<ProductPrice>> GetProductPricesByCodeAsync(string code);
+        public Task<IEnumerable<UpdatedProductPrice>> GetLastUpdatedProductPricesByCodeAsync(string code);
 
         /// <summary>
         /// Insert products prices

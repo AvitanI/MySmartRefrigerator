@@ -34,21 +34,21 @@ namespace WebAPI.Controllers
         #region Instance Methods (API)
 
         /// <summary>
-        /// Get product by code (barcode)
+        /// Get last updated product prices by code (barcode)
         /// </summary>
         /// <param name="code">The product code</param>
         /// <returns>Product</returns>
         [HttpGet]
-        [Route("getProductPricesByCode/{code}")]
-        public async Task<ApiResult<IEnumerable<ProductPrice>>> GetProductPricesByCodeAsync(string code)
+        [Route("getLastUpdatedProductPricesByCode/{code}")]
+        public async Task<ApiResult<IEnumerable<UpdatedProductPrice>>> GetLastUpdatedProductPricesByCodeAsync(string code)
         {
             // Init result
-            var apiResult = new ApiResult<IEnumerable<ProductPrice>>();
+            var apiResult = new ApiResult<IEnumerable<UpdatedProductPrice>>();
 
             try
             {
                 // Get product prices from service
-                apiResult.Data = await _productService.GetProductPricesByCodeAsync(code);
+                apiResult.Data = await _productService.GetLastUpdatedProductPricesByCodeAsync(code);
             }
             catch (Exception exception)
             {

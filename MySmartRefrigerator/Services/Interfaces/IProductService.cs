@@ -25,10 +25,10 @@ namespace WebAPI.Repositories.Interfaces
         Task UpdateProductsAsync(ProductsListDTO productsList);
 
         /// <summary>
-        /// Get product prices by code (barcode)
+        /// Get last updated product prices by code (barcode)
         /// </summary>
         /// <param name="code">The product code</param>
         /// <returns>Product prices</returns>
-        public Task<IEnumerable<ProductPrice>> GetProductPricesByCodeAsync(string code);
+        public Task<IEnumerable<UpdatedProductPrice>> GetLastUpdatedProductPricesByCodeAsync(string code);
     }
 }

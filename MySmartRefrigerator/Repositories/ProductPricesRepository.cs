@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace WebAPI.Repositories
 {
@@ -47,12 +48,12 @@ namespace WebAPI.Repositories
         #region Instance Methods
 
         /// <summary>
-        /// Get product prices by code
+        /// Get last updated product prices by code
         /// </summary>
         /// <param name="code">The product code</param>
         /// <exception cref="ArgumentException">Throws when product code is empty</exception>
         /// <returns>Product prices</returns>
-        public async Task<IEnumerable<ProductPrice>> GetProductPricesByCodeAsync(string code)
+        public async Task<IEnumerable<UpdatedProductPrice>> GetLastUpdatedProductPricesByCodeAsync(string code)
         {
             #region Validation
 
@@ -63,13 +64,34 @@ namespace WebAPI.Repositories
 
             #endregion
 
-            // Create filter
-            FilterDefinition<ProductPrice> filter = Builders<ProductPrice>.Filter.Eq(p => p.Code, code);
-
             // Set cancellation token
             var cancellationTokenSource = new CancellationTokenSource(CommandTimeoutInMS);
 
-            return await _productsPrices.Find(filter).ToListAsync(cancellationToken: cancellationTokenSource.Token);
+            return await _productsPrices.Aggregate()
+                                        .SortByDescending(productPrice => productPrice.PriceUpdateDate)
+                                        .Match(Builders<ProductPrice>.Filter.Eq(productPrice => productPrice.Code, code))
+                                        .Group(
+                                            productPrice => new 
+                                            {
+                                                chainID = productPrice.ChainID,
+                                                storeID = productPrice.StoreID 
+                                            },
+                                            group => new {
+                                                price = group.Select(
+                                                    productPrice => productPrice.Price
+                                                ).First()
+                                            })
+                                        .Limit(10)
+                                        .SortBy(productPrice => productPrice.price)
+                                        // TO-DO: Fix this magic string to static code
+                                        .Project<UpdatedProductPrice>(@"
+                                                {
+                                                    _id: 0,
+                                                    ChainID: '$_id.chainID',
+                                                    StoreID: '$_id.storeID',
+                                                    Price: '$price'
+                                                }")
+                                        .ToListAsync(cancellationToken: cancellationTokenSource.Token);
         }
 
         /// <summary>

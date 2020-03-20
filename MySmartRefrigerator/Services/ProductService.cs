@@ -67,12 +67,12 @@ namespace WebAPI.Repositories.Services
         }
 
         /// <summary>
-        /// Get product prices by code (barcode)
+        /// Get last updated product prices by code (barcode)
         /// </summary>
         /// <param name="code">The product code</param>
         /// <exception cref="ArgumentException">Throws when product code is empty</exception>
         /// <returns>Product prices</returns>
-        public async Task<IEnumerable<ProductPrice>> GetProductPricesByCodeAsync(string code)
+        public async Task<IEnumerable<UpdatedProductPrice>> GetLastUpdatedProductPricesByCodeAsync(string code)
         {
             #region Validation
 
@@ -83,7 +83,7 @@ namespace WebAPI.Repositories.Services
 
             #endregion
 
-            return await _productPricesRepository.GetProductPricesByCodeAsync(code);
+            return await _productPricesRepository.GetLastUpdatedProductPricesByCodeAsync(code);
         }
 
         /// <summary>
