@@ -8,6 +8,7 @@
         None = 0,
         FailedToGetProductByCode = 1,
         FailedToUpdateProducts = 2,
-        FailedToGetProductPricesByCode = 3
+        FailedToGetProductPricesByCode = 3,
+        FailedToGetStores = 4
     }
 }

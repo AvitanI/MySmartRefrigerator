@@ -6,6 +6,8 @@
 
         public string ProductsPricesCollectionName { get; set; }
 
+        public string StoresCollectionName { get; set; }
+
         public string ConnectionString { get; set; }
 
         public string DatabaseName { get; set; }

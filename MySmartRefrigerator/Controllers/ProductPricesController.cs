@@ -6,7 +6,7 @@ using Common.Logs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebAPI.Models;
-using WebAPI.Repositories;
+using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Controllers
 {

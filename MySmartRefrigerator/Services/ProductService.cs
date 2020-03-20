@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Common.Extensions;
 using Common.Enumerations;
 
-namespace WebAPI.Repositories
+namespace WebAPI.Repositories.Services
 {
     /// <summary>
     /// Represent services for product

@@ -3,7 +3,7 @@ using WebAPI.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace WebAPI.Repositories
+namespace WebAPI.Repositories.Interfaces
 {
     /// <summary>
     /// Represent services for product

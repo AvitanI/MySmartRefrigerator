@@ -7,6 +7,9 @@ using Microsoft.Extensions.Options;
 using WebAPI.Models;
 using WebAPI.Repositories;
 using WebAPI.Repositories.Interfaces;
+using WebAPI.Repositories.Services;
+using WebAPI.Services;
+using WebAPI.Services.Interfaces;
 
 namespace WebAPI
 {
@@ -34,13 +37,21 @@ namespace WebAPI
 
             #endregion
 
+            #region Services
+
             services.AddScoped<IProductService, ProductService>();
+
+            services.AddScoped<IStoreService, StoreService>();
+
+            #endregion
 
             #region Repositories
 
             services.AddSingleton<IProductPricesRepository, ProductPricesRepository>();
 
             services.AddSingleton<IProductRepository, ProductRepository>();
+
+            services.AddSingleton<IStoreRepository, StoresRepository>();
 
             #endregion
 

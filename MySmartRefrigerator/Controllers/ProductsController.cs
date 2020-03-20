@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using WebAPI.Repositories;
 using WebAPI.Models;
 using Common.Logs;
 using Common.DTO;
 using Common.API;
+using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Controllers
 {
