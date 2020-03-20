@@ -17,6 +17,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 /* Internal Components */
 import Image from '../Image/Image';
+import Map from '../Map/Map';
 
 /* Contexts */
 import StoresContext from '../../contexts/storesContext';
@@ -226,6 +227,11 @@ const Product = () => {
                 <div style={{ width: '50%', float: 'left' }}>
                     <Paper elevation={3} classes={{ root: papersStyle.root }}>
                         { (loading) ? <CircularProgress /> : renderProduct(product) }
+                    </Paper>
+                </div>
+                <div style={{ width: '100%', float: 'left', margin: '50px 0 0 0' }}>
+                    <Paper elevation={3} classes={{ root: papersStyle.root }}>
+                        <div className="koko"><Map /></div>
                     </Paper>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import Product from './components/Product/Product';
 import PersistentDrawerLeft from './components/PersistentDrawerLeft/PersistentDrawerLeft';
 import { SnackbarProvider } from 'notistack';
 import { StoresProvider } from './contexts/storesContext';
+import Sandbox from './components/Sandbox/Sandbox';
 
 import './custom.css'
 
@@ -33,6 +34,7 @@ const App = () => {
           <PersistentDrawerLeft>
               <Route exact path='/' component={Product /*Dasboared*/} />
               <Route path='/findProduct' component={Product} />
+              <Route path='/sandbox' component={Sandbox} />
           </PersistentDrawerLeft>
         </SnackbarProvider>
       </StoresProvider>
