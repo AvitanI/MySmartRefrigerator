@@ -1,15 +1,17 @@
-﻿using Common.Extensions;
+﻿using Common.DTO.Location;
+using Common.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Driver;
 using MongoDB.Driver.GeoJsonObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using WebAPI.Models;
 using WebAPI.Repositories;
 using WebAPI.Repositories.Interfaces;
+using WebAPI.Services;
+using WebAPI.Services.Interfaces;
 
 namespace Tests
 {
@@ -54,6 +56,7 @@ namespace Tests
             #region Arrange
 
             IEnumerable<Store> allStores = await _storeRepository.GetStoresAsync();
+            ILocationService locationService = new LocationService();
 
             #endregion
 
@@ -65,17 +68,44 @@ namespace Tests
                 throw new Exception("Stores are empty");
             }
 
-            UpdateResult updateResult = await _storeRepository.UpdateStoreLocation(allStores.First().ID,
-                                                        new GeoJsonPoint<GeoJson2DGeographicCoordinates>(
-                                                            new GeoJson2DGeographicCoordinates(longitude: 35.084962, latitude: 32.83619)));
+            foreach (Store store in allStores)
+            {
+                // Continue when store already has location
+                if (store.Location != null)
+                {
+                    continue;
+                }
+
+                // Continue when city or address are empty
+                if (string.IsNullOrWhiteSpace(store.City) ||
+                    string.IsNullOrWhiteSpace(store.Address))
+                {
+                    continue;
+                }
+
+                // Fetch location for store
+                ForwardGeocodingResponse locationResponse = 
+                    await locationService.GetLocationByAddress(store.City, store.Address);
+
+                // Continue when results are empty
+                if (locationResponse.Results.IsNullOrEmpty())
+                {
+                    continue;
+                }
+
+                ForwardGeocodingResult result = locationResponse.Results.First();
+
+                var geoPointToUpdate = new GeoJsonPoint<GeoJson2DGeographicCoordinates>(
+                                            new GeoJson2DGeographicCoordinates(
+                                                longitude: result.Geometry.Lng, 
+                                                latitude: result.Geometry.Lat));
+
+                await _storeRepository.UpdateStoreLocation(store.ID, geoPointToUpdate);
+            }
 
             #endregion
 
-            #region Assert
-
-            Assert.IsTrue(updateResult.MatchedCount > 0 && updateResult.ModifiedCount > 0);
-
-            #endregion
+            // No assert
         }
 
         #endregion
