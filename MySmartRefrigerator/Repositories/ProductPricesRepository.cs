@@ -64,6 +64,47 @@ namespace WebAPI.Repositories
 
             #endregion
 
+            #region Query Output
+
+            /*
+             * db.getCollection('ProductsPrices').aggregate([
+                    {
+                        $sort: { 
+                            PriceUpdateDate: -1
+                        }
+                    },
+                    {
+                        $match: {
+                            Code : '16000548909'
+                        }
+                    },
+                    {
+                        $group: {
+                          _id: { chainID : "$ChainID", storeID : "$StoreID" },
+                          price: { $first : "$Price" }
+                        }
+                    },
+                    {
+                        $limit: 10
+                    },
+                    {
+                        $sort: { 
+                            price: 1
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            ChainID: '$_id.chainID',
+                            StoreID: '$_id.storeID',
+                            Price: '$price'
+                        }
+                    }
+                ])
+             */
+
+            #endregion
+
             // Set cancellation token
             var cancellationTokenSource = new CancellationTokenSource(CommandTimeoutInMS);
 
