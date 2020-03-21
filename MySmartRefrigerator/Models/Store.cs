@@ -1,6 +1,7 @@
 ﻿using Common.Enumerations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace WebAPI.Models
 {
@@ -47,5 +48,11 @@ namespace WebAPI.Models
         /// The city of provider
         /// </summary>
         public string City { get; set; }
+
+        /// <summary>
+        /// The lat and lon of store.
+        /// <seealso cref="https://stackoverflow.com/questions/49779378/how-to-store-and-query-an-array-of-coordinates-in-c-sharp-mongodb-strongly-typed"/>
+        /// </summary>
+        public GeoJsonPoint<GeoJson2DGeographicCoordinates> Location { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using MongoDB.Driver;
+using MongoDB.Driver.GeoJsonObjectModel;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,6 +55,40 @@ namespace WebAPI.Repositories
 
             return await _stores.Find(Builders<Store>.Filter.Empty)
                                 .ToListAsync(cancellationToken: cancellationTokenSource.Token);
+        }
+
+        /// <summary>
+        /// Updates store location
+        /// </summary>
+        /// <param name="id">The document id of store to update</param>
+        /// <param name="location">The location to update</param>
+        /// <exception cref="ArgumentException">Throws when id is empty</exception>
+        /// <exception cref="ArgumentNullException">Throws when location is null</exception>
+        /// <returns>Result of update</returns>
+        public async Task<UpdateResult> UpdateStoreLocation(string id, 
+                                                            GeoJsonPoint<GeoJson2DGeographicCoordinates> location)
+        {
+            #region Validations
+
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                throw new ArgumentException("MongoDB id is empty", nameof(id));
+            }
+
+            if (location is null)
+            {
+                throw new ArgumentNullException(nameof(location));
+            }
+
+            #endregion
+
+            // Create filter
+            FilterDefinition<Store> filter = Builders<Store>.Filter.Eq(store => store.ID, id);
+
+            // Create update query
+            UpdateDefinition<Store> update = Builders<Store>.Update.Set(store => store.Location, location);
+
+            return await _stores.UpdateOneAsync(filter, update);
         }
 
         #endregion

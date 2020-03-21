@@ -4,6 +4,7 @@ using WebAPI.Repositories;
 using WebAPI.Repositories.Interfaces;
 using System;
 using System.Threading.Tasks;
+using WebAPI.Repositories.Services;
 
 namespace Tests
 {
