@@ -5,9 +5,11 @@ import React, { useState, useEffect } from 'react';
 import BrokenImageIcon from '@material-ui/icons/BrokenImage';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+const DEFAULT_IMAGE_STYLE = { width: '100%', height: 'auto' };
+
 const Image = (props) => {
     // Props
-    const { src = '', fallbackSrc = '' } = props;
+    const { src = '', fallbackSrc = '', imageStyle = DEFAULT_IMAGE_STYLE } = props;
 
     // State
     const [readerResult, setReaderResult] = useState('');
@@ -70,7 +72,7 @@ const Image = (props) => {
                     (!!(readerResult && readerResult.trim())) ? 
                         <img src={readerResult} 
                             alt="Image not found"
-                            style={{ width: '100%', height: 'auto' }}></img>
+                            style={imageStyle}></img>
                         :
                         renderFallback()
                 }

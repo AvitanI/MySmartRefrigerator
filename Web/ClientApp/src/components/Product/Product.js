@@ -15,21 +15,31 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
+/* Leaflet */
+import L from 'leaflet';
+
 /* Internal Components */
 import Image from '../Image/Image';
 import Map from '../Map/Map';
 
+/* Utils */
+import * as imageUtils from '../../utils/imageUtils';
+import { NIS_HTML_ENTITY } from '../../utils/common';
+
 /* Contexts */
 import StoresContext from '../../contexts/storesContext';
 
-
+// Paper style
 const usePaperStyle = makeStyles({
     root: {
-      height: '550px'
+      height: '320px'
     }
   });
 
 const ramiLeviStaticImages = (code) => `https://static.rami-levy.co.il/storage/images/${code}/medium.jpg`;
+
+// Default location for map
+const HAIFA_LOCATION = [32.7996897, 35.0517954];
 
 const Product = () => {
     // State
@@ -38,6 +48,7 @@ const Product = () => {
     const [loading, setloading] = useState(false);
     const [code, setCode] = useState('');
     const [invalidCode, setInvalidCode] = useState(false);
+    const [markers, setMarkers] = useState([]);
     
     // Context
     const stores = useContext(StoresContext);
@@ -72,7 +83,9 @@ const Product = () => {
                         {product.name}
                 </Typography>
                 <div style={{ width: '50%' }}>
-                    <Image src={`http://localhost:49847/api/ImagesProxy/getProductImage?url=${ramiLeviStaticImages(code)}`} />
+                    <Image 
+                        src={`http://localhost:49847/api/ImagesProxy/getProductImage?url=${ramiLeviStaticImages(code)}`}
+                        imageStyle={{ width: '60%', height: 'auto' }} />
                 </div>
             </div>
         );
@@ -109,7 +122,7 @@ const Product = () => {
     };
 
     /**
-     * gets product from api by code
+     * Gets product from api by code
      * @param {any} code
      */
     const getProductByID = async (code) => {
@@ -141,6 +154,10 @@ const Product = () => {
         setProduct(responseData.data);
     };
 
+    /**
+     * Gets last updated product prices from api by code
+     * @param {any} code
+     */
     const getLastUpdatedProductPricesByID = async (code) => {
         // setloading(true);
         setProduct([]);
@@ -165,9 +182,38 @@ const Product = () => {
             return;
         }
  
-        setProductPrices(responseData.data);
+        setProductPrices(responseData.data.slice(0, 5));
+
+        if(responseData.data.length) {
+            let markersToAdd = [];
+    
+            responseData.data.forEach(productPrice => { 
+                const { chainID = 0, storeID = '', price = 0 } = productPrice;
+                const store = stores.find(s => s.internalChainID === chainID && s.storeID === storeID);
+                const { location = {} } = store || {};
+                const { coordinates = {} } = location;
+                const { longitude = 0, latitude = 0 } = coordinates;
+                
+                if(longitude && latitude) {
+                    markersToAdd.push(
+                        L.marker([latitude, longitude], { 
+                            icon: L.icon({ 
+                                iconUrl: imageUtils.getChainMapIconByChainID(chainID), 
+                                iconSize: [35, 35]
+                            }) 
+                        }).bindTooltip(`${price} ${NIS_HTML_ENTITY}`, { permanent: true })
+                    );
+                }
+            });
+    
+            setMarkers(markersToAdd);
+        }
     };
 
+    /**
+     * Renderes the product prices in table
+     * @param {any} productPrices
+     */
     const renderProductPrices = (productPrices) => {
         if(!productPrices || !productPrices.length) {
             return null;
@@ -185,13 +231,13 @@ const Product = () => {
                 </TableHead>
                 <TableBody>
                     { 
-                        productPrices.map(productPrice => { 
+                        productPrices.map((productPrice, i) => { 
                             const { chainID = 0, storeID = '' } = productPrice;
                             const store = stores.find(s => s.internalChainID === chainID && s.storeID === storeID);
                             const { chainName = 'unknown', subChainName = 'unknown', storeName = 'unknown' } = store || {};
 
                             return (
-                                <TableRow key={productPrice.id}>
+                                <TableRow key={i}>
                                     <TableCell align="center">{chainName}</TableCell>
                                     <TableCell align="center">{subChainName}</TableCell>
                                     <TableCell align="center">{storeName}</TableCell>
@@ -204,7 +250,7 @@ const Product = () => {
             </Table>
         );
     };
-
+    
     return (
         <div>
             <TextField
@@ -215,8 +261,6 @@ const Product = () => {
             />
             
             <Button variant="contained" color="primary" onClick={handleSearchClick}>search</Button>  
-
-            <h1 style={{ margin: '50px 0 0 0' }}>Product Info</h1>
 
             <div style={{ margin: '50px 0 0 0' }}>
                 <div style={{ width: '50%', float: 'left', paddingRight: '30px' }}>
@@ -231,7 +275,12 @@ const Product = () => {
                 </div>
                 <div style={{ width: '100%', float: 'left', margin: '50px 0 0 0' }}>
                     <Paper elevation={3} classes={{ root: papersStyle.root }}>
-                        <div className="koko"><Map /></div>
+                        <div className="mapWarpper">
+                            <Map    
+                                initialView={HAIFA_LOCATION} 
+                                markers={markers} 
+                                style={{ height: '550px' }} />
+                        </div>
                     </Paper>
                 </div>
             </div>
