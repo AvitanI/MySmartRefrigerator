@@ -41,6 +41,8 @@ const ramiLeviStaticImages = (code) => `https://static.rami-levy.co.il/storage/i
 // Default location for map
 const HAIFA_LOCATION = [32.7996897, 35.0517954];
 
+const MAP_STYLE = { height: '550px' };
+
 const Product = () => {
     // State
     const [product, setProduct] = useState({});
@@ -279,7 +281,7 @@ const Product = () => {
                             <Map    
                                 initialView={HAIFA_LOCATION} 
                                 markers={markers} 
-                                style={{ height: '550px' }} />
+                                style={MAP_STYLE} />
                         </div>
                     </Paper>
                 </div>
