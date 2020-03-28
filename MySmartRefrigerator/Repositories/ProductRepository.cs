@@ -97,14 +97,22 @@ namespace WebAPI.Repositories
 
             #region Create Update
 
-            UpdateDefinition<Product> update = Builders<Product>.Update.Set(p => p.LastUpdate, DateTime.Now)
-                                                                       .SetOnInsert(p => p.Code, product.Code)
-                                                                       .SetOnInsert(p => p.Name, product.Name);
+            UpdateDefinition<Product> update =
+                Builders<Product>.Update.Set(p => p.LastUpdate, DateTime.Now)
+                                        .SetOnInsert(p => p.Code, product.Code)
+                                        .SetOnInsert(p => p.Name, product.Name)
+                                        .SetOnInsert(p => p.ManufacturerName, product.ManufacturerName)
+                                        .SetOnInsert(p => p.ManufactureCountry, product.ManufactureCountry)
+                                        .SetOnInsert(p => p.ManufacturerDescription, product.ManufacturerDescription)
+                                        .SetOnInsert(p => p.Quantity, product.Quantity)
+                                        .SetOnInsert(p => p.UnitQuantityType, product.UnitQuantityType)
+                                        .SetOnInsert(p => p.UnitOfMeasure, product.UnitOfMeasure)
+                                        .SetOnInsert(p => p.UnitOfMeasurePrice, product.UnitOfMeasurePrice);
 
-            #endregion
+        #endregion
 
-            // Set cancellation token
-            var cancellationTokenSource = new CancellationTokenSource(CommandTimeoutInMS);
+        // Set cancellation token
+        var cancellationTokenSource = new CancellationTokenSource(CommandTimeoutInMS);
 
             return await _products.UpdateOneAsync(  filter, update, 
                                                     new UpdateOptions { IsUpsert = true }, 

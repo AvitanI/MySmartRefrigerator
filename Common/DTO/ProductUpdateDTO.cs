@@ -3,6 +3,8 @@
 namespace Common.DTO
 {
     /*
+     * Example of input:
+     * 
      * <PriceUpdateDate>2017-02-07 08:54</PriceUpdateDate>
       <ItemCode>11210000094</ItemCode>
       <ItemType>1</ItemType>
@@ -31,14 +33,18 @@ namespace Common.DTO
 
         public string ItemPrice { get; set; }
 
-        //public string ManufacturerName { get; set; }
+        public string ManufacturerName { get; set; }
 
-        //public string ManufactureCountry { get; set; }
+        public string ManufactureCountry { get; set; }
 
-        //public string ManufacturerItemDescription { get; set; }
+        public string ManufacturerItemDescription { get; set; }
 
-        //public string UnitQty { get; set; }
+        public string Quantity { get; set; }
 
-        //public decimal Quantity { get; set; }
+        public string UnitQty { get; set; }
+
+        public string UnitOfMeasure { get; set; }
+
+        public string UnitOfMeasurePrice { get; set; }
     }
 }

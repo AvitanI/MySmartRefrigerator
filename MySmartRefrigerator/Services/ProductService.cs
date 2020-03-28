@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Common.Extensions;
 using Common.Enumerations;
+using System.Text.RegularExpressions;
 
 namespace WebAPI.Repositories.Services
 {
@@ -26,6 +27,18 @@ namespace WebAPI.Repositories.Services
         /// Product prices repository for CRUD
         /// </summary>
         private readonly IProductPricesRepository _productPricesRepository;
+
+        #endregion
+
+        #region Class Variables
+
+        private static readonly string group_name_for_pattern = "unit";
+
+        /// <summary>
+        /// Used for regex
+        /// </summary>
+        private static readonly string UNIT_OF_MEASURE_PATTERN = 
+            $@"((?<{group_name_for_pattern}>\d+)\s+|[""a-z\u0590-\u05fe]+)";
 
         #endregion
 
@@ -121,37 +134,80 @@ namespace WebAPI.Repositories.Services
 
             #endregion
 
-            await UpsertProductsAsync(productsList.Products.Select(product => new Product 
+            #region Upsert Products
+
+            var productModels = new List<Product>(productsList.Products.Count());
+
+            foreach (var product in productsList.Products)
             {
-                Code = product.ItemCode,
-                Name = product.ItemName
-            }));
+                decimal.TryParse(product.Quantity, out decimal quantity);
+                decimal.TryParse(product.UnitOfMeasurePrice, out decimal unitOfMeasurePrice);
 
-            await InsertProductsPricesAsync(productsList.Products.Select(product => new ProductPrice 
-            { 
-                Code = product.ItemCode,
-                ChainID = productsList.ChainID,
-                StoreID = productsList.StoreID,
-                Price = Convert.ToDecimal(product.ItemPrice),
-                PriceUpdateDate = product.PriceUpdateDate
-            }));
-        }
-
-        private async Task InsertProductsPricesAsync(IEnumerable<ProductPrice> productsPrices)
-        {
-            await _productPricesRepository.InsertProductsPricesProductAsync(productsPrices);
-        }
-
-        private async Task UpsertProductsAsync(IEnumerable<Product> products)
-        {
-            #region For Each Product - Insert Or Update
-
-            foreach (Product productToUpdate in products)
-            {
-                await _productRepository.UpsertProductAsync(productToUpdate);
+                await _productRepository.UpsertProductAsync(new Product
+                {
+                    Code = product.ItemCode,
+                    Name = product.ItemName,
+                    ManufacturerName = product.ManufacturerName,
+                    ManufactureCountry = product.ManufactureCountry,
+                    ManufacturerDescription = product.ManufacturerItemDescription,
+                    Quantity = quantity,
+                    UnitQuantityType = product.UnitQty.ToUnitQuantity(),
+                    UnitOfMeasure = ExtractUnitOfMeasure(product.UnitOfMeasure),
+                    UnitOfMeasurePrice = unitOfMeasurePrice
+                });
             }
 
             #endregion
+
+            #region Insert Product Prices
+
+            await _productPricesRepository.InsertProductsPricesProductAsync(productsList.Products.Select(product => 
+                new ProductPrice 
+                { 
+                    Code = product.ItemCode,
+                    ChainID = productsList.ChainID,
+                    StoreID = productsList.StoreID,
+                    Price = Convert.ToDecimal(product.ItemPrice),
+                    PriceUpdateDate = product.PriceUpdateDate
+                }));
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Class Methods
+
+        /// <summary>
+        /// Get unit of measure by string e.g. 100 מ"ל
+        /// </summary>
+        /// <param name="unitOfMeasure">The unit of measure</param>
+        /// <returns></returns>
+        private static decimal ExtractUnitOfMeasure(string unitOfMeasure)
+        {
+            // Check for empty value
+            if (string.IsNullOrWhiteSpace(unitOfMeasure))
+            {
+                return default;
+            }
+
+            var regex = new Regex(UNIT_OF_MEASURE_PATTERN);
+
+            // Mtaching unit e.g. 100 מ"ל or ק"ג
+            Match match = regex.Match(unitOfMeasure);
+
+            if (match.Success)
+            {
+                string unit = match.Groups[group_name_for_pattern].Value;
+
+                decimal.TryParse(unit, out decimal parsedUnitOfMeasure);
+
+                return parsedUnitOfMeasure;
+            }
+            else
+            {
+                return default;
+            }
         }
 
         #endregion
