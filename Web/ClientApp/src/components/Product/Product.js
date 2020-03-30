@@ -1,9 +1,10 @@
 /* React */
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 
 /* Material UI */
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+// import Button from '@material-ui/core/Button';
+// import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useSnackbar } from 'notistack';
 import Table from '@material-ui/core/Table';
@@ -52,10 +53,13 @@ const Product = () => {
     const [product, setProduct] = useState({});
     const [productPrices, setProductPrices] = useState([]);
     const [loading, setloading] = useState(false);
-    const [code, setCode] = useState('');
-    const [invalidCode, setInvalidCode] = useState(false);
+    // const [code, setCode] = useState('');
+    // const [invalidCode, setInvalidCode] = useState(false);
     const [markers, setMarkers] = useState([]);
     
+    // Query params
+    const { code = '' } = useParams();
+
     // Context
     const stores = useContext(StoresContext);
 
@@ -65,35 +69,52 @@ const Product = () => {
     // Style
     const papersStyle = usePaperStyle();
 
+    useEffect(() => {
+        const invalidCode = !!(!code || !code.length);
+
+        if(invalidCode) {
+            enqueueSnackbar('product code is empty', { variant: 'error' });
+
+            return;
+        }
+
+        if(!stores || !stores.length) {
+            return;
+        }
+
+        getProductByID(code);
+        getLastUpdatedProductPricesByID(code);
+    }, [stores]);
+
     /**
      * Called for every change and setting the code
      * @param {any} e
      */
-    const handleCodeChange = (e) => {
-        let code = e.target.value;
-        code = (code && code.trim()) || '';
+    // const handleCodeChange = (e) => {
+    //     let code = e.target.value;
+    //     code = (code && code.trim()) || '';
 
-        const invalidCode = !code.length;
+    //     const invalidCode = !code.length;
 
-        setInvalidCode(invalidCode);
-        setCode(code);
-    };
+    //     setInvalidCode(invalidCode);
+    //     setCode(code);
+    // };
 
     /**
      * Called when searching product
      * @param {any} e
      */
-    const handleSearchClick = (e) => {
-        const invalidCode = !!(!code || !code.length);
+    // const handleSearchClick = (e) => {
+    //     const invalidCode = !!(!code || !code.length);
 
-        if(invalidCode) {
-            setInvalidCode(invalidCode);
-        }
-        else {
-            getProductByID(code);
-            getLastUpdatedProductPricesByID(code);
-        }
-    };
+    //     if(invalidCode) {
+    //         setInvalidCode(invalidCode);
+    //     }
+    //     else {
+    //         getProductByID(code);
+    //         getLastUpdatedProductPricesByID(code);
+    //     }
+    // };
 
     /**
      * Gets product from api by code
@@ -159,7 +180,7 @@ const Product = () => {
                     );
                 }
             });
-    
+            
             setMarkers(markersToAdd);
         }
     };
@@ -256,16 +277,16 @@ const Product = () => {
     
     return (
         <div>
-            <TextField
+            {/* <TextField
                 error={invalidCode}
                 label={(invalidCode) ? "Invalid code" : "Code" }
                 value={code} 
                 onChange={handleCodeChange}
-            />
+            /> */}
             
-            <Button variant="contained" color="primary" onClick={handleSearchClick}>search</Button>  
+            {/* <Button variant="contained" color="primary" onClick={handleSearchClick}>search</Button>   */}
 
-            <div style={{ margin: '50px 0 0 0' }}>
+            <div style={{ margin: '10px 0 0 0' }}>
                 <div style={{ width: '50%', float: 'left', paddingRight: '30px' }}>
                     <Paper elevation={3} classes={{ root: papersStyle.root }}>
                         { renderProductPrices(productPrices) }

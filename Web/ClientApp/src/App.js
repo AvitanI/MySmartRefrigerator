@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router';
 
 /* Internal Components */
-//import { Dasboared } from './components/Dasboared/Dasboared';
+import Dashboared from './components/Dashboared/Dashboared';
 import Product from './components/Product/Product';
 import PersistentDrawerLeft from './components/PersistentDrawerLeft/PersistentDrawerLeft';
 import Sandbox from './components/Sandbox/Sandbox';
@@ -37,8 +37,8 @@ const App = () => {
       <StoresProvider value={stores}>
         <SnackbarProvider maxSnack={1} anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}>
           <PersistentDrawerLeft>
-              <Route exact path='/' component={Product /*Dasboared*/} />
-              <Route path='/findProduct' component={Product} />
+              <Route exact path='/' component={Dashboared} />
+              <Route path='/products/:code' component={Product} />
               <Route path='/sandbox' component={Sandbox} />
           </PersistentDrawerLeft>
         </SnackbarProvider>
