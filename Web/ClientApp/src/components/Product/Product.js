@@ -29,6 +29,10 @@ import { NIS_HTML_ENTITY } from '../../utils/common';
 /* Contexts */
 import StoresContext from '../../contexts/storesContext';
 
+/* API */
+import * as productPricesService from '../../api/productPrices';
+import * as productService from '../../api/product';
+
 // Paper style
 const usePaperStyle = makeStyles({
     root: {
@@ -98,16 +102,7 @@ const Product = () => {
     const getProductByID = async (code) => {
         setloading(true);
         
-        let responseData = null;
-
-        try {
-            const response= await fetch('http://localhost:49847/api/products/getProductByCode/' + code);
-            // console.log('response', response);
-            responseData = await response.json();
-        }
-        catch(e) {
-            console.log('e', e);
-        }
+        const responseData = await productService.getProductByID(code);
 
         setloading(false);
 
@@ -132,18 +127,7 @@ const Product = () => {
         // setloading(true);
         setProduct([]);
         
-        let responseData = null;
-
-        try {
-            const response= await fetch('http://localhost:49847/api/productPrices/getLastUpdatedProductPricesByCode/' + code);
-            // console.log('response', response);
-            responseData = await response.json();
-        }
-        catch(e) {
-            console.log('e', e);
-        }
-
-        // setloading(false);
+        const responseData = await productPricesService.getLastUpdatedProductPricesByCode(code);
 
         if (!responseData         ||
             !responseData.data    ||

@@ -14,6 +14,9 @@ import { StoresProvider } from './contexts/storesContext';
 /* Material UI */
 import { SnackbarProvider } from 'notistack';
 
+/* API */
+import { getStores } from './api/store';
+
 /* CSS */
 import './custom.css'
 
@@ -25,15 +28,9 @@ const App = () => {
   }, []);
 
   const loadStores = async () => {
-    try {
-      const response = await fetch('http://localhost:49847/api/stores/getStores');
-	    const responseData = await response.json();
-	  
-	    setStores(responseData.data);
-    }
-    catch(e) {
-        console.log('e', e);
-    }
+    const responseData = await getStores();
+
+    setStores(responseData.data);
   };
 
   return (
