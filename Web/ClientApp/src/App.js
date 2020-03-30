@@ -1,12 +1,20 @@
+/* React */
 import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router';
+
+/* Internal Components */
 //import { Dasboared } from './components/Dasboared/Dasboared';
 import Product from './components/Product/Product';
 import PersistentDrawerLeft from './components/PersistentDrawerLeft/PersistentDrawerLeft';
-import { SnackbarProvider } from 'notistack';
-import { StoresProvider } from './contexts/storesContext';
 import Sandbox from './components/Sandbox/Sandbox';
 
+/* Contexts */
+import { StoresProvider } from './contexts/storesContext';
+
+/* Material UI */
+import { SnackbarProvider } from 'notistack';
+
+/* CSS */
 import './custom.css'
 
 const App = () => {
@@ -19,9 +27,9 @@ const App = () => {
   const loadStores = async () => {
     try {
       const response = await fetch('http://localhost:49847/api/stores/getStores');
-	  const responseData = await response.json();
+	    const responseData = await response.json();
 	  
-	  setStores(responseData.data);
+	    setStores(responseData.data);
     }
     catch(e) {
         console.log('e', e);

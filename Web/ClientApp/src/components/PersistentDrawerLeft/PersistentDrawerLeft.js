@@ -1,4 +1,8 @@
+/* React */
 import React from 'react';
+import { Link } from "react-router-dom";
+
+/* Material UI */
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -17,7 +21,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import SpeedIcon from '@material-ui/icons/Speed';
 import SearchIcon from '@material-ui/icons/Search';
-import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
