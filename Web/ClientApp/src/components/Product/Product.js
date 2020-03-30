@@ -54,62 +54,12 @@ const Product = () => {
     
     // Context
     const stores = useContext(StoresContext);
-    //console.log('stores', stores);
 
     // Libs
     const { enqueueSnackbar } = useSnackbar();
 
     // Style
     const papersStyle = usePaperStyle();
-
-    /**
-     * Renderes the product in table
-     * @param {any} product
-     */
-    const renderProduct = (product) => {
-        // When product mot found
-        if(!product) {
-            return (<div>Product not found</div>);
-        }
-
-        // When product is empty (first render)
-        if(!Object.keys(product).length) {
-            return null;
-        }
-
-        // Render the product
-        // 16000548909
-        return (
-            <div>
-                <div style={{ width: '50%', float: 'left' }}>
-                    <Image 
-                        src={`http://localhost:49847/api/ImagesProxy/getProductImage?url=${ramiLeviStaticImages(code)}`}
-                        imageStyle={{ width: '60%', height: 'auto' }} />
-                </div>
-                <div style={{ width: '50%', float: 'left', padding: '20px 20px 0 0' }}>
-                    <Typography variant="h5" align="center" gutterBottom>
-                        {product.name}
-                    </Typography>
-                    <Table aria-label="simple table">
-                        <TableBody>
-                            <TableRow>
-                                <TableCell align="left">Manufacturer Name</TableCell>
-                                <TableCell align="center">{product.manufacturerName}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="left">Manufacture Country</TableCell>
-                                <TableCell align="center">{product.manufactureCountry}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell align="left">Manufacturer Description</TableCell>
-                                <TableCell align="center">{product.manufacturerDescription}</TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </div>
-            </div>
-        );
-    };
 
     /**
      * Called for every change and setting the code
@@ -228,6 +178,55 @@ const Product = () => {
     
             setMarkers(markersToAdd);
         }
+    };
+
+    /**
+     * Renderes the product in table
+     * @param {any} product
+     */
+    const renderProduct = (product) => {
+        // When product mot found
+        if(!product) {
+            return (<div>Product not found</div>);
+        }
+
+        // When product is empty (first render)
+        if(!Object.keys(product).length) {
+            return null;
+        }
+
+        // Render the product
+        // 16000548909
+        return (
+            <div>
+                <div style={{ width: '50%', float: 'left' }}>
+                    <Image 
+                        src={`http://localhost:49847/api/ImagesProxy/getProductImage?url=${ramiLeviStaticImages(code)}`}
+                        imageStyle={{ width: '60%', height: 'auto' }} />
+                </div>
+                <div style={{ width: '50%', float: 'left', padding: '20px 20px 0 0' }}>
+                    <Typography variant="h5" align="center" gutterBottom>
+                        {product.name}
+                    </Typography>
+                    <Table aria-label="simple table">
+                        <TableBody>
+                            <TableRow>
+                                <TableCell align="left">Manufacturer Name</TableCell>
+                                <TableCell align="center">{product.manufacturerName}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="left">Manufacture Country</TableCell>
+                                <TableCell align="center">{product.manufactureCountry}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="left">Manufacturer Description</TableCell>
+                                <TableCell align="center">{product.manufacturerDescription}</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </div>
+            </div>
+        );
     };
 
     /**
