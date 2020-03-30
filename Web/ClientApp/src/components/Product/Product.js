@@ -81,13 +81,31 @@ const Product = () => {
         // 16000548909
         return (
             <div>
-                <Typography variant="h5" align="center" gutterBottom>
-                        {product.name}
-                </Typography>
-                <div style={{ width: '50%' }}>
+                <div style={{ width: '50%', float: 'left' }}>
                     <Image 
                         src={`http://localhost:49847/api/ImagesProxy/getProductImage?url=${ramiLeviStaticImages(code)}`}
                         imageStyle={{ width: '60%', height: 'auto' }} />
+                </div>
+                <div style={{ width: '50%', float: 'left', padding: '20px 20px 0 0' }}>
+                    <Typography variant="h5" align="center" gutterBottom>
+                        {product.name}
+                    </Typography>
+                    <Table aria-label="simple table">
+                        <TableBody>
+                            <TableRow>
+                                <TableCell align="left">Manufacturer Name</TableCell>
+                                <TableCell align="center">{product.manufacturerName}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="left">Manufacture Country</TableCell>
+                                <TableCell align="center">{product.manufactureCountry}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="left">Manufacturer Description</TableCell>
+                                <TableCell align="center">{product.manufacturerDescription}</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
                 </div>
             </div>
         );
