@@ -179,7 +179,7 @@ export default function PersistentDrawerLeft(props) {
                     <ListItem
                         button
                         component={Link}
-                        to="/findProduct"
+                        to="/products/16000548404"
                         key={'Search'}>
                         <ListItemIcon>
                             <SearchIcon />
