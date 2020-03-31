@@ -15,6 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+// import MapIcon from '@material-ui/icons/Map';
 
 /* Leaflet */
 import L from 'leaflet';
@@ -46,7 +47,7 @@ const ramiLeviStaticImages = (code) => `https://static.rami-levy.co.il/storage/i
 // Default location for map
 const HAIFA_LOCATION = [32.7996897, 35.0517954];
 
-const MAP_STYLE = { height: '550px' };
+const MAP_STYLE = { height: '450px' };
 
 const Product = () => {
     // State
@@ -298,6 +299,9 @@ const Product = () => {
                     </Paper>
                 </div>
                 <div style={{ width: '100%', float: 'left', margin: '50px 0 0 0' }}>
+                    {/* <div className="header">
+                        <MapIcon />
+                    </div> */}
                     <Paper elevation={3} classes={{ root: papersStyle.root }}>
                         <div className="mapWarpper">
                             <Map    

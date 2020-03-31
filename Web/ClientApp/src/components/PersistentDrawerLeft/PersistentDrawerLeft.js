@@ -10,7 +10,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-//import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -21,12 +21,21 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import SpeedIcon from '@material-ui/icons/Speed';
 import SearchIcon from '@material-ui/icons/Search';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import StorefrontIcon from '@material-ui/icons/Storefront';
+import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
+    },
+    username: {
+        padding: '5px 0 0 0'
+    },
+    title: {
+        flexGrow: 1,
     },
     appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
@@ -92,7 +101,7 @@ export default function PersistentDrawerLeft(props) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
+    
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -112,9 +121,21 @@ export default function PersistentDrawerLeft(props) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    {/* <Typography variant="h6" noWrap>
-                        Persistent drawer
-                    </Typography> */}
+                    <Typography variant="h6" noWrap className={classes.title}>
+                        My Smart Refrigerator
+                    </Typography>
+                    <Typography variant="subtitle2" gutterBottom className={classes.username}>
+                        Idan.A
+                    </Typography>
+                    <IconButton
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        color="inherit"
+                    >
+                        {/* onClick={handleMenu} */}
+                        <AccountCircle />
+                    </IconButton>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -146,13 +167,35 @@ export default function PersistentDrawerLeft(props) {
                     </ListItem>
                     <ListItem
                         button
+                        disabled={true}
+                        component={Link}
+                        to="/stores"
+                        key={'Stores'}>
+                        <ListItemIcon>
+                            <StorefrontIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Stores'} />
+                    </ListItem>
+                    <ListItem
+                        button
                         component={Link}
                         to="/findProduct"
                         key={'Search'}>
                         <ListItemIcon>
                             <SearchIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'Search'} />
+                        <ListItemText primary={'Products'} />
+                    </ListItem>
+                    <ListItem
+                        button
+                        disabled={true}
+                        component={Link}
+                        to="/promos"
+                        key={'Promos'}>
+                        <ListItemIcon>
+                            <CardGiftcardIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Promos'} />
                     </ListItem>
                 </List>
             </Drawer>
