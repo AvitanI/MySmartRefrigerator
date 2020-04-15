@@ -166,8 +166,15 @@ const Product = () => {
             responseData.data.forEach(productPrice => { 
                 const { chainID = 0, storeID = '', price = 0 } = productPrice;
                 const store = stores.find(s => s.internalChainID === chainID && s.storeID === storeID);
-                const { location = {} } = store || {};
-                const { coordinates = {} } = location;
+
+                // Continue when store not found
+                if(!store) {
+                    console.error(`Store not found for chain ${chainID} and storeID ${storeID}`);
+
+                    return;
+                }
+                
+                const { coordinates = {} } = store.location || {};
                 const { longitude = 0, latitude = 0 } = coordinates;
                 
                 if(longitude && latitude) {
@@ -175,7 +182,7 @@ const Product = () => {
                         L.marker([latitude, longitude], { 
                             icon: L.icon({ 
                                 iconUrl: imageUtils.getChainMapIconByChainID(chainID), 
-                                iconSize: [35, 35]
+                                iconSize: [40, 40]
                             }) 
                         }).bindTooltip(`${price} ${NIS_HTML_ENTITY}`, { permanent: true })
                     );
@@ -264,7 +271,7 @@ const Product = () => {
                             return (
                                 <TableRow key={i}>
                                     <TableCell align="center">{chainName}</TableCell>
-                                    <TableCell align="center">{subChainName}</TableCell>
+                                    <TableCell align="center">{subChainName || '-'}</TableCell>
                                     <TableCell align="center">{storeName}</TableCell>
                                     <TableCell align="center">{productPrice.price} &#8362;</TableCell>
                                 </TableRow>

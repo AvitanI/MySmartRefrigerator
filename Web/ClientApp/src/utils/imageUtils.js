@@ -11,6 +11,8 @@ export const getChainMapIconByChainID = (chainID) => {
     switch(chainID) {
         case 1:
             return '/images/chainLogos/ShufersalLogo2.png';
+        case 2:
+            return '/images/chainLogos/RamiLeviLogo.png';
         default:
             return null;
     }
