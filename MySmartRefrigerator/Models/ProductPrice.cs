@@ -27,11 +27,12 @@ namespace WebAPI.Models
         /// <summary>
         /// The store id
         /// </summary>
-        public string StoreID { get; set; }
+        public int StoreID { get; set; }
 
         /// <summary>
         /// Price
         /// </summary>
+        [BsonRepresentation(BsonType.Decimal128)]
         public decimal Price { get; set; }
 
         /// <summary>

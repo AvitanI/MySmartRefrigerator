@@ -166,7 +166,7 @@ namespace WebAPI.Repositories.Services
                 { 
                     Code = product.ItemCode,
                     ChainID = productsList.ChainID,
-                    StoreID = productsList.StoreID,
+                    StoreID = Convert.ToInt32(productsList.StoreID),
                     Price = Convert.ToDecimal(product.ItemPrice),
                     PriceUpdateDate = product.PriceUpdateDate
                 }));

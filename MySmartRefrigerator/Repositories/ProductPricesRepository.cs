@@ -122,7 +122,6 @@ namespace WebAPI.Repositories
                                                     productPrice => productPrice.Price
                                                 ).First()
                                             })
-                                        .Limit(10)
                                         .SortBy(productPrice => productPrice.price)
                                         // TO-DO: Fix this magic string to static code
                                         .Project<UpdatedProductPrice>(@"

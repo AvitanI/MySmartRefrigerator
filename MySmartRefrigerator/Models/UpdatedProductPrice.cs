@@ -15,7 +15,7 @@ namespace WebAPI.Models
         /// <summary>
         /// The store id
         /// </summary>
-        public string StoreID { get; set; }
+        public int StoreID { get; set; }
 
         /// <summary>
         /// Price

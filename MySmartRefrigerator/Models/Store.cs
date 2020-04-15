@@ -22,7 +22,7 @@ namespace WebAPI.Models
         /// <summary>
         /// The store id of provider
         /// </summary>
-        public string StoreID { get; set; }
+        public int StoreID { get; set; }
 
         /// <summary>
         /// The chain name of provider
