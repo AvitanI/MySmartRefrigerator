@@ -1,11 +1,9 @@
 /* Http */
-import { get } from './http';
-
-const application = 'http://localhost:49847';
+import { get, API_RESOURCE } from './http';
 
 /**
  * Get all stores
  */
 export const getStores = async () => {
-    return await get(application.concat('/api/stores/getStores'));
+    return await get(API_RESOURCE('/api/stores/getStores'));
 };

@@ -4,6 +4,16 @@ const HTTP_POST = 'POST';
 // const HTTP_DELETE = 'DELETE';
 
 /**
+ * Build API url by resource
+ * @param {string} resource 
+ */
+export const API_RESOURCE = (resource) => {
+    const api = process.env.REACT_APP_API_URL;
+
+    return api.concat(resource);
+};
+
+/**
  * Get parsed fetch response by url and http options
  */
 const parsedFetch = async (url, options) => {
